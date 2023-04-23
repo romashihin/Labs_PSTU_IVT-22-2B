@@ -1,53 +1,34 @@
-﻿#include <iostream>
-#include <ctime>
-#include <Windows.h>
+#include <iostream>
 using namespace std;
-int main()
-{
-	SetConsoleCP(1251);
-	SetConsoleOutputCP(1251);
-	srand(time(NULL));
-	int mask[3] = { 1, 2, 3 };
-	int arr[300];
-	for (int i = 0; i < 300; i++)
-	{
-		arr[i] = rand() % 10;
-	}
-	cout << "Массив: " << endl;
-	for (int i = 0; i < 300; i++)
-	{
-		cout << arr[i] << " ";
-	}
-	cout << endl;
-	cout << "Искомая маска:" << endl;
-	for (int i = 0; i < 3; i++)
-	{
-		cout << mask[i] << " ";
-	}
-	cout << endl;
-	bool res = false;
-	int stroka = 0;
-	for (int i = 0; i < 293; i++)
-	{
-		if (arr[i + 2] == mask[2] and arr[i + 1] == mask[1] and arr[i] == mask[0])
-		{
-			res = true;
-			stroka = i + 1;
+
+int main() {
+	const int n = 15;
+	int m[n] = { 45, 96, -10, 73, 43, 4, 64, -1, 12, 90, 15, 88, 23, 45, -10};
+	int max = m[0];
+	int min = m[0];
+	for (int i = 0; i < n; i++) {
+		if (m[i] > max) {
+			max = m[i];
+		}
+		else if (m[i] < min) {
+			min = m[i];
 		}
 	}
-	if (res)
-	{
-		cout << "Искомая маска ";
-		for (int i = 0; i < 3; i++)
-		{
-			cout << mask[i] << " ";
-		}
-		cout << "найдена" << endl;
-		cout << "Маска начинается с элемента под номером " << stroka << endl;
+	int l = max - min + 1;
+	int* a = new int[l] {};
+	for (int i = 0; i < n; i++) {
+		a[m[i] - min] += 1;
 	}
-	else
-	{
-		cout << "Искомая маска не найдена" << endl;
+	int k = 0;
+	for (int i = 0; i < l; i++) {
+		for (int j = 0; j < a[i]; j++) {
+			m[k] = i + min;
+			k++;
+		}
+	}
+	delete[] a;
+	for (int i = 0; i < n; i++) {
+		cout << m[i] << ' ';
 	}
 	return 0;
 }
