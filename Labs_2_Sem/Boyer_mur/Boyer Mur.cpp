@@ -15,6 +15,12 @@ int main()
 	char e = 'e';
 	char n = 'n';
 	char a = 'a';
+	cout << "Our string: " << endl;
+	for (int i = 0; i < 332; i++)
+	{
+		cout << array[i];
+	}
+	cout << endl << endl;
 	while (flag)
 	{
 		if (array[counter] == a)
@@ -113,5 +119,6 @@ int main()
 	{
 		cout << "Substring 'Lena' is not found";
 	}
+	cout << endl;
 	return 0;
 }
