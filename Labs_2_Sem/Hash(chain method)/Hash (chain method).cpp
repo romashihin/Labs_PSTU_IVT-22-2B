@@ -156,6 +156,6 @@ int main()
 			table.findIndex(a);
 		}
 	}
-	delete arr[];
+	delete [] arr;
 	return 0;
 }
