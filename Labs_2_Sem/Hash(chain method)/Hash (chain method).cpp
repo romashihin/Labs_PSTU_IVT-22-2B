@@ -1,7 +1,6 @@
-﻿#include <iostream>
-#include <string>
+#include <iostream>
+#include <string.h>
 #include <time.h>
-
 using namespace std;
 
 int size_x;
@@ -9,23 +8,196 @@ int size_x;
 class human
 {
 public:
-	int index = NULL;
 	int telephone = NULL;
 	string fullname = "NULL";
 	string date = "NULL";
-	human* human_pointer = NULL;
 };
 
-class hash_table {
+template<typename T>
+class List
+{
 public:
-	human* arr;
-	hash_table(int size)
+	List();
+	~List();
+
+	//удаление первого элемента в списке
+	void pop_front();
+
+	//добавление элемента в конец списка
+	void push_back(T data);
+
+	// очистить список
+	void clear();
+
+	// получить количество елементов в списке
+	int GetSize() { return Size; }
+
+	// перегруженный оператор [] 
+	T& operator[](const int index);
+
+	//добавление элемента в начало списка
+	void push_front(T data);
+
+	//добавление элемента в список по указанному индексу
+	void insert(T data, int index);
+
+	//удаление элемента в списке по указанному индексу
+	void removeAt(int index);
+
+	//удаление последнего элемента в списке
+	void pop_back();
+
+private:
+
+	template<typename T>
+	class Node
 	{
-		arr = new human[size];
-	}
-	void add();
-	void findIndex(int telephone);
+	public:
+		Node* pNext;
+		T data;
+
+		Node(T data = T(), Node* pNext = nullptr)
+		{
+			this->data = data;
+			this->pNext = pNext;
+		}
+	};
+	int Size;
+	Node<T>* head;
 };
+
+template<typename T>
+List<T>::List()
+{
+	Size = 0;
+	head = nullptr;
+}
+
+template<typename T>
+List<T>::~List()
+{
+	clear();
+}
+
+template<typename T>
+void List<T>::pop_front()
+{
+	Node<T>* temp = head;
+
+	head = head->pNext;
+
+	delete temp;
+
+	Size--;
+
+}
+
+template<typename T>
+void List<T>::push_back(T data)
+{
+	if (head == nullptr)
+	{
+		head = new Node<T>(data);
+	}
+	else
+	{
+		Node<T>* current = this->head;
+
+		while (current->pNext != nullptr)
+		{
+			current = current->pNext;
+		}
+		current->pNext = new Node<T>(data);
+
+	}
+
+	Size++;
+}
+
+template<typename T>
+void List<T>::clear()
+{
+	while (Size)
+	{
+		pop_front();
+	}
+}
+
+template<typename T>
+T& List<T>::operator[](const int index)
+{
+	int counter = 0;
+
+	Node<T>* current = this->head;
+
+	while (current != nullptr)
+	{
+		if (counter == index)
+		{
+			return current->data;
+		}
+		current = current->pNext;
+		counter++;
+	}
+}
+
+template<typename T>
+void List<T>::push_front(T data)
+{
+	head = new Node<T>(data, head);
+	Size++;
+}
+
+template<typename T>
+void List<T>::insert(T data, int index)
+{
+	if (index == 0)
+	{
+		push_front(data);
+	}
+	else
+	{
+		Node<T>* previous = this->head;
+
+		for (int i = 0; i < index - 1; i++)
+		{
+			previous = previous->pNext;
+		}
+
+		Node<T>* newNode = new Node<T>(data, previous->pNext);
+
+		previous->pNext = newNode;
+
+		Size++;
+	}
+}
+
+template<typename T>
+void List<T>::removeAt(int index)
+{
+	if (index == 0)
+	{
+		pop_front();
+	}
+	else
+	{
+		Node<T>* previous = this->head;
+		for (int i = 0; i < index - 1; i++)
+		{
+			previous = previous->pNext;
+		}
+		Node<T>* toDelete = previous->pNext;
+		previous->pNext = toDelete->pNext;
+		delete toDelete;
+		Size--;
+	}
+}
+
+template<typename T>
+void List<T>::pop_back()
+{
+	removeAt(Size - 1);
+}
 
 string names[100] = { "Никита", "Иван", "Пол", "Артем", "Егор", "Рома", "Дмитрий", "Максим", "Сергей", "Андрей", "Илья", "Кирилл", "Михаил", "Матвей", "Роман", "Иван", "Ильяс", "Арсенний", "Денис", "Евгений", "Даниил", "Тимофей", "Владислав", "Павел", "Марк", "Константин", "Тимур", "Олег", "Ярослав", "Антон", "Николай", "Глеб", "Данил", "Савелий", "Вадим", "Степан", "Юрий", "Богдан", "Артур", "Семен", "Макар", "Лев", "Виктор", "Елисей", "Виталий", "Вячеслав", "Захар", "Мирон", "Дамир", "Георгий", "Давид", "Платон", "Анатолий", "Григорий", "Демид", "Данила", "Станислав", "Василий", "Федор", "Родион" , "Леонид", "Одиссей", "Валерий", "Святослав", "Борис", "Эдуард", "Марат", "Герман", "Даниэль", "Петр", "Амир", "Всеволод", "Мирослав", "Гордей", "Артемий", "Эмиль", "Назар", "Савва", "Ян", "Рустам", "Ингат", "Влад", "Альберт", "Тамерлан", "Айдар", "Роберт", "Марсель", "Ильдар", "Самир", "Тихон" , "Рамиль", "Ринат", "Радмир", "Филипп", "Арсен", "Ростислав", "Святогор", "Яромир", "Алдуин", "Пастернак" };
 string last_names[100] = { "Ипатов", "Баратеон", "Талли", "Инь", "Грейджой", "Бронн", "Мартелл", "Атрейдес", "Харконнен", "Гильдеец", "Смирнов", "Иванов", "Кузнецов", "Соколов", "Попов", "Лебедев", "Козлов", "Новиков", "Морозов", "Петров", "Волков", "Соловьев", "Васильев", "Зайцев", "Павлов", "Семенов", "Голубев", "Виноградов", "Богданов", "Влолбев", "Федоров", "Михайлов", "Беляев", "Тарасов", "Белов", "Комаров", "Тарасов", "Белов", "Комаров", "Орлов", "Киселев", "Андреев", "Макаров", "Гладиатор", "Ильин", "Лазарев", "Медведев", "Ершов", "Никитин", "Соболев", "Рябов", "Поляков", "Цветков", "Данилов", "Жуков", "Фролов", "Журавльев", "Драконорожденный", "Егоров", "Петухов" , "Тимофеев", "Власов", "Калорв", "Лапин", "Сазонов", "Гордеев", "Уваров", "Брагин", "Якушев", "Зыков", "Шарапов", "Рожков", "Самоснов", "Лихачев", "Щукин", "Шаров", "Сафонов", "Птеродактель", "Устинов", "Исаев", "Капустин", "Кириллов", "Рогов", "Князев", "Кулагин", "Логинов", "Савин", "Туров", "Блинов", "Королев" , "Пестов", "Меркушев", "Гущин", "Буров", "Галкин", "Коновалов", "Громов", "Мельников", "Давыдов", "Русаков" };
@@ -61,101 +233,46 @@ void show(const human tmp)
 		<< "\nНомер телефона:        " << tmp.telephone << endl << endl;
 }
 
-void hash_table::add()
-{
-	int f = rand_telephone();
-	int c = hash_f(f, size_x);
-	if (arr[c].index = NULL)
-	{
-		arr[c].index = c;
-		arr[c].date = rand_dates();
-		arr[c].fullname = rand_name();
-		arr[c].telephone = f;
-	}
-	else
-	{
-		bool flag = true; 
-		human tmp;
-		tmp = *arr[c].human_pointer;
-		while (flag)
-		{			
-			if (tmp.index == NULL)
-			{
-				human temp;
-				temp.index = hash_f(f, size_x);
-				temp.date = rand_dates();
-				temp.fullname = rand_name();
-				temp.telephone = f;
-				tmp.human_pointer = &temp;
-				flag = false;
-				break;
-			}
-			else
-			{
-				tmp = *tmp.human_pointer;
-			}
-		}
-	}
-}
-
-void hash_table::findIndex(int telephone)
-{
-	int t = hash_f(telephone, size_x);
-	for (int i = 0; i < size_x; i++)
-	{
-		if (arr[i].index == t)
-		{
-			bool f = true;
-			human t = *arr[i].human_pointer;
-			while (f)
-			{
-				if (t.telephone == telephone)
-				{
-					show(t);
-					f = false;
-					break;
-				}
-				else
-				{
-					t = *t.human_pointer;
-				}
-			}
-		}
-	}
-}
-
 int main()
 {
-	setlocale(LC_ALL, "Russian");
+	setlocale(LC_ALL, "ru");
 	srand(time(NULL));
-	static int size;
-	cout << "Введите колличество элементов в таблице: ";
-	cin >> size;
-	size_x = size;
-	cout << endl;
-	human* arr = new human[size];
-	hash_table table(size);
-	for (int i = 0; i < size; i++)
+	cout << "Введите размер таблицы: ";
+	cin >> size_x;
+	List<human>* arr;
+	arr = new List<human>[size_x];
+	for (int i = 0; i < size_x; i++)
 	{
-		table.add();
+		int tel = rand_telephone();
+		int index = hash_f(tel, size_x);
+		human tmp;
+		tmp.telephone = tel;
+		tmp.date = rand_dates();
+		tmp.fullname = rand_name();
+		arr[index].push_back(tmp);
 	}
-	bool fl = true;
-	cout << "Чтобы завершить работу программы, введите 0" << endl;
-	while (fl)
+	int a;
+	cout << "Введите номер телефона: ";
+	cin >> a;
+	cout << endl;
+	int index = hash_f(a, size_x);
+	bool flag = true;
+	int i = 0;
+	while (flag)
 	{
-		int a;
-		cout << "Введите номер телефона: ";
-		cin >> a;
-		if (a == 0)
+		if(arr[index][i].telephone == a)
 		{
-			fl = false;
+			show(arr[index][i]);
+			flag = false;
 			break;
 		}
-		else
-		{
-			table.findIndex(a);
-		}
+		i++;
 	}
-	delete [] arr;
+	if (flag)
+	{
+		cout << "Такого номера не существует" << endl;
+	}
+	delete[] arr;
 	return 0;
 }
+
