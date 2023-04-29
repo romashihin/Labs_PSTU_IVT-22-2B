@@ -1,5 +1,3 @@
-﻿#include "Time.h"
-
 int main()
 {
 	Time a;
@@ -8,10 +6,15 @@ int main()
 	cin >> a;
 	cin >> b;
 	c = a - b;
-	--c;
+	cout << endl;
+	if (a == b)
+		cout << "Время равно" << endl;
+	else
+		cout << "Время не равно" << endl;
 	cout << "a = " << a << endl;
 	cout << "b = " << b << endl;
 	cout << "c = " << c << endl;
+	--a;
+	cout << "a = " << a << endl;
 	return 0;
 }
-
