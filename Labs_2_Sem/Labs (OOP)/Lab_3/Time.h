@@ -22,7 +22,8 @@ public:
 	Time& operator--();
 	Time operator--(int);
 	Time operator-(const Time&);
+	bool operator==(const Time&);
 	
 	friend istream& operator>>(istream& in, Time& t);
 	friend ostream& operator<<(ostream& out, const Time& t);
-};
+}
