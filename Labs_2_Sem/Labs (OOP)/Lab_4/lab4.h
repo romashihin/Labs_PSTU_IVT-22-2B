@@ -18,7 +18,7 @@ public:
 	void set_first(int f) { first = f; };
 	void set_second(int s) { second = s; };
 
-	Pari operator+(const Pari&);
+	Pari operator+(const Pari& p);
 	friend istream& operator>>(istream& in, Pari& p);
 	friend ostream& operator<<(ostream& out, const Pari& p);
 };
@@ -28,9 +28,9 @@ class Money : public Pari
 
 public:
 	
-	Money operator+(const Money&);
-	Money operator-(const Money&);
-	double operator/(const Money&);
+	Money operator+(const Money& p);
+	Money operator-(const Money& p);
+	double operator/(const Money& p);
 	friend istream& operator>>(istream& in, Money& l);
 	friend ostream& operator<<(ostream& out, const Money& l);
 };
