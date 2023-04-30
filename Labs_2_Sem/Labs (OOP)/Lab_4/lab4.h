@@ -19,7 +19,6 @@ public:
 	void set_second(int s) { second = s; };
 
 	Pari operator+(const Pari&);
-	Pari Sum(Pari one, Pari two);
 	friend istream& operator>>(istream& in, Pari& p);
 	friend ostream& operator<<(ostream& out, const Pari& p);
 };
